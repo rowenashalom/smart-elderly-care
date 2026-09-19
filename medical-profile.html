@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medical Profile - ElderCare</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>💙 ElderCare</h2>
+
+        <div>
+            <a href="index.html">Home</a>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+
+    <div class="form-container">
+
+        <h1>👩‍⚕️ Medical Profile</h1>
+
+        <p id="welcomeMessage">
+            Your medical information
+        </p>
+
+
+        <div class="profile-card">
+
+            <h2>Personal Information</h2>
+
+            <p>
+                <strong>Name:</strong>
+                <span id="profileName"></span>
+            </p>
+
+            <p>
+                <strong>Date of Birth:</strong>
+                <span id="profileDob"></span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span id="profileEmail"></span>
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                <span id="profilePhone"></span>
+            </p>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <h2>🩺 Medical Information</h2>
+
+            <p>
+                <strong>Blood Group:</strong>
+                <span id="profileBlood"></span>
+            </p>
+
+            <p>
+                <strong>Medical Conditions:</strong>
+                <span id="profileConditions"></span>
+            </p>
+
+            <p>
+                <strong>Allergies:</strong>
+                <span id="profileAllergies"></span>
+            </p>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <h2>👨‍👩‍👧 Caregiver Information</h2>
+
+            <p>
+                <strong>Name:</strong>
+                <span id="profileCaregiver"></span>
+            </p>
+
+            <p>
+                <strong>Relationship:</strong>
+                <span id="profileRelationship"></span>
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                <span id="profileCaregiverPhone"></span>
+            </p>
+
+        </div>
+
+
+        <button onclick="goToMedicine()">
+            💊 Add Medicine
+        </button>
+
+        <button onclick="goDashboard()">
+            🏠 Go to Dashboard
+        </button>
+
+    </div>
+
+
+    <script>
+
+        const user =
+            JSON.parse(localStorage.getItem("user"));
+
+
+        if (!user) {
+
+            window.location.href = "login.html";
+
+        } else {
+
+            document.getElementById("welcomeMessage").innerText =
+                "Welcome, " + user.name + "!";
+
+            document.getElementById("profileName").innerText =
+                user.name || "Not provided";
+
+            document.getElementById("profileDob").innerText =
+                user.dob || "Not provided";
+
+            document.getElementById("profileEmail").innerText =
+                user.email || "Not provided";
+
+            document.getElementById("profilePhone").innerText =
+                user.phone || "Not provided";
+
+            document.getElementById("profileBlood").innerText =
+                user.bloodGroup || "Not provided";
+
+            document.getElementById("profileConditions").innerText =
+                user.conditions || "None";
+
+            document.getElementById("profileAllergies").innerText =
+                user.allergies || "None";
+
+            document.getElementById("profileCaregiver").innerText =
+                user.caregiverName || "Not provided";
+
+            document.getElementById("profileRelationship").innerText =
+                user.relationship || "Not provided";
+
+            document.getElementById("profileCaregiverPhone").innerText =
+                user.caregiverPhone || "Not provided";
+        }
+
+
+        function goToMedicine() {
+
+            window.location.href = "medicine.html";
+
+        }
+
+
+        function goDashboard() {
+
+            window.location.href = "dashboard.html";
+
+        }
+
+
+        function logout() {
+
+            localStorage.removeItem("user");
+
+            window.location.href = "login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

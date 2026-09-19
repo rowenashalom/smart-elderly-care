@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Elderly Care Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ==============================
+           LANDING PAGE
+           ============================== */
+
+        .landing-page {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #eef2ff,
+                #f8f9ff
+            );
+        }
+
+        .landing-header {
+            background: linear-gradient(
+                135deg,
+                #5b7cfa,
+                #7b61ff
+            );
+
+            color: white;
+
+            padding: 20px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.12);
+        }
+
+        .landing-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .landing-logo-icon {
+            font-size: 35px;
+        }
+
+        .landing-logo h1 {
+            font-size: 23px;
+        }
+
+        .landing-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .landing-nav button {
+            border: none;
+
+            padding: 11px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        .login-nav-btn {
+            background: white;
+            color: #5669d8;
+        }
+
+        .register-nav-btn {
+            background: rgba(
+                255,
+                255,
+                255,
+                0.2
+            );
+
+            color: white;
+
+            border: 1px solid
+                rgba(255,255,255,0.5)
+                !important;
+        }
+
+
+        /* ==============================
+           HERO
+           ============================== */
+
+        .hero {
+            width: 90%;
+            max-width: 1200px;
+
+            margin: auto;
+
+            min-height: 480px;
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr 0.9fr;
+
+            gap: 50px;
+
+            align-items: center;
+        }
+
+        .hero-content h2 {
+            font-size: 48px;
+
+            line-height: 1.15;
+
+            color: #263238;
+
+            margin-bottom: 20px;
+        }
+
+        .hero-content h2 span {
+            color: #667eea;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #68727d;
+
+            max-width: 600px;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .hero-login,
+        .hero-register {
+            border: none;
+
+            padding: 15px 28px;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            font-weight: bold;
+        }
+
+        .hero-login {
+            background: #667eea;
+
+            color: white;
+
+            box-shadow:
+                0 6px 18px
+                rgba(102,126,234,0.3);
+        }
+
+        .hero-register {
+            background: white;
+
+            color: #667eea;
+
+            border: 2px solid
+                #667eea;
+        }
+
+
+        /* ==============================
+           HERO CARD
+           ============================== */
+
+        .hero-card {
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.1);
+
+            text-align: center;
+        }
+
+        .hero-icon {
+            width: 110px;
+
+            height: 110px;
+
+            margin: auto auto 20px;
+
+            border-radius: 50%;
+
+            background: #eef1ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 55px;
+        }
+
+        .hero-card h3 {
+            font-size: 24px;
+
+            margin-bottom: 10px;
+
+            color: #263238;
+        }
+
+        .hero-card p {
+            color: #68727d;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==============================
+           FEATURES
+           ============================== */
+
+        .features {
+            width: 90%;
+
+            max-width: 1200px;
+
+            margin: 20px auto 50px;
+        }
+
+        .features-title {
+            text-align: center;
+
+            font-size: 30px;
+
+            margin-bottom: 25px;
+
+            color: #263238;
+        }
+
+        .feature-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.07);
+
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform:
+                translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 38px;
+
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 9px;
+
+            color: #3549a3;
+        }
+
+        .feature-card p {
+            color: #68727d;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ==============================
+           FOOTER
+           ============================== */
+
+        .landing-footer {
+            background: #263238;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 40px;
+        }
+
+        .landing-footer p {
+            opacity: 0.8;
+
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           MOBILE
+           ============================== */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+
+                padding: 50px 0;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .feature-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .landing-header {
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .hero-content h2 {
+                font-size: 35px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="landing-page">
+
+
+    <!-- ==============================
+         HEADER
+         ============================== -->
+
+    <header class="landing-header">
+
+        <div class="landing-logo">
+
+            <div class="landing-logo-icon">
+                🩺
+            </div>
+
+            <h1>
+                Smart Elderly Care Assistant
+            </h1>
+
+        </div>
+
+
+        <div class="landing-nav">
+
+            <button
+                class="login-nav-btn"
+                onclick="goToLogin()">
+
+                Login
+
+            </button>
+
+
+            <button
+                class="register-nav-btn"
+                onclick="goToRegister()">
+
+                Create Account
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==============================
+         HERO SECTION
+         ============================== -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <h2>
+
+                Caring for health,
+                <span>
+                    made simple.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Smart Elderly Care Assistant
+                helps elderly users manage
+                medicines, receive reminders,
+                use voice assistance and stay
+                connected with their caregivers.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <button
+                    class="hero-login"
+                    onclick="goToLogin()">
+
+                    🔐 Login
+
+                </button>
+
+
+                <button
+                    class="hero-register"
+                    onclick="goToRegister()">
+
+                    📝 Create Account
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HERO CARD -->
+
+        <div class="hero-card">
+
+            <div class="hero-icon">
+
+                🧓❤️
+
+            </div>
+
+
+            <h3>
+                Your Personal Care Companion
+            </h3>
+
+
+            <p>
+
+                Keep your medicines,
+                health information and
+                reminders organized in
+                one simple application.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==============================
+         FEATURES
+         ============================== -->
+
+    <section class="features">
+
+        <h2 class="features-title">
+
+            Everything You Need
+
+        </h2>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💊
+                </div>
+
+                <h3>
+                    Medicine Management
+                </h3>
+
+                <p>
+                    Add and manage your
+                    daily medicines and
+                    dosage information.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔔
+                </div>
+
+                <h3>
+                    Smart Reminders
+                </h3>
+
+                <p>
+                    Get timely medicine
+                    reminders so you don't
+                    miss your medication.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔊
+                </div>
+
+                <h3>
+                    Voice Assistant
+                </h3>
+
+                <p>
+                    Hear medicine reminders
+                    through the built-in
+                    voice assistant.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    👨‍👩‍👧
+                </div>
+
+                <h3>
+                    Caregiver Support
+                </h3>
+
+                <p>
+                    Store caregiver details
+                    and keep important
+                    support information nearby.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==============================
+         FOOTER
+         ============================== -->
+
+    <footer class="landing-footer">
+
+        <p>
+            © 2026 Smart Elderly Care Assistant
+        </p>
+
+        <p>
+            Making elderly healthcare
+            simpler and smarter.
+        </p>
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+    function goToLogin() {
+
+        window.location.href =
+            "login.html";
+
+    }
+
+
+    function goToRegister() {
+
+        window.location.href =
+            "register.html";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

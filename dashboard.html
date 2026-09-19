@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Elderly Care Assistant</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <h1>🏥 Smart Elderly Care Assistant</h1>
+
+    <div>
+
+        <button onclick="goDashboard()">
+            🏠 Dashboard
+        </button>
+
+        <button onclick="logout()">
+            🚪 Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     WELCOME
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>
+        👋 Welcome,
+        <span id="userName">User</span>
+    </h2>
+
+    <p>
+        Your health and medicine information in one place.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     MEDICINE OVERVIEW
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>📊 Medicine Overview</h2>
+
+    <div class="stats-container">
+
+
+        <div class="stat-card">
+
+            <h3>Total Medicines</h3>
+
+            <p id="totalMedicines">
+                0
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Completed</h3>
+
+            <p id="completedMedicines">
+                0
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Pending</h3>
+
+            <p id="pendingMedicines">
+                0
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Next Reminder</h3>
+
+            <p id="nextReminder">
+                No reminders
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MY MEDICINES
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <div class="section-title">
+
+        <h2>💊 My Medicines</h2>
+
+        <button class="add-medicine-btn"
+                onclick="goToAddMedicine()">
+            ➕ Add Medicine
+        </button>
+
+    </div>
+
+    <!-- Medicines will appear here -->
+    <div id="medicineList"></div>
+        <div class="today-schedule">
+
+    <h2>📅 Today's Medicine Schedule</h2>
+
+    <div id="todaySchedule"></div>
+
+</div>
+    <!-- MISSED MEDICINE ALERT -->
+
+    <div class="missed-alert-section">
+
+    <h2>🚨 Missed Medicine Alerts</h2>
+
+    <div id="missedMedicineAlerts">
+
+        <p>No missed medicines.</p>
+
+    </div>
+
+</div>
+
+        <p class="loading-text">
+            Loading medicines...
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     REMINDER INFORMATION
+===================================================== -->
+
+<section class="dashboard-section"
+         id="reminders">
+
+    <h2>⏰ Medicine Reminder</h2>
+
+    <div class="reminder-card">
+
+        <h3 id="reminderMedicine">
+            No reminder
+        </h3>
+
+        <p id="reminderDetails">
+            Your medicine reminder will appear here.
+        </p>
+
+        <p id="reminderTime">
+            --
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     VOICE ASSISTANT
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>🎙️ Voice Assistant</h2>
+
+    <p>
+        Your voice assistant can remind you to take your medicine.
+    </p>
+
+
+    <!-- Normal voice reminder -->
+
+    <button class="voice-btn"
+            onclick="speakReminder()">
+
+        🔊 Speak Reminder
+
+    </button>
+
+
+    <!-- Voice test -->
+
+    <button class="voice-btn"
+            onclick="testVoice()">
+
+        🔊 TEST VOICE
+
+    </button>
+
+
+    <!-- Test medicine popup -->
+
+    <button class="notification-btn"
+            onclick="testMedicineNotification()">
+
+        🔔 Test Medicine Notification
+
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     MEDICAL INFORMATION
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>🩺 Medical Information</h2>
+
+    <div class="info-card">
+
+
+        <p>
+
+            <strong>
+                Blood Group:
+            </strong>
+
+            <span id="bloodGroup">
+                Not provided
+            </span>
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Medical Conditions:
+            </strong>
+
+            <span id="conditions">
+                None
+            </span>
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Allergies:
+            </strong>
+
+            <span id="allergies">
+                None
+            </span>
+
+        </p>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CAREGIVER INFORMATION
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>📞 Caregiver Information</h2>
+
+    <div class="info-card">
+
+
+        <p>
+
+            <strong>
+                Name:
+            </strong>
+
+            <span id="caregiverName">
+                Not provided
+            </span>
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Relationship:
+            </strong>
+
+            <span id="relationship">
+                Not provided
+            </span>
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Phone:
+            </strong>
+
+            <span id="caregiverPhone">
+                Not provided
+            </span>
+
+        </p>
+        
+        <p>
+           <strong>Email:</strong>
+           <span id="caregiverEmail">Not available</span>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<section class="dashboard-section">
+
+    <h2>⚙️ Settings</h2>
+
+    <div class="settings-card">
+
+        <h3>
+            🔔 Medicine Notifications
+        </h3>
+
+        <p>
+            Enable browser notifications for medicine reminders.
+        </p>
+
+        <button class="notification-btn"
+                onclick="requestNotificationPermission()">
+
+            Enable Notifications
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MEDICINE NOTIFICATION POPUP
+===================================================== -->
+
+<div id="medicineNotification"
+     class="medicine-notification">
+
+
+    <!-- Notification Header -->
+
+    <div class="notification-header">
+
+        <span>
+            🔔 Medicine Reminder
+        </span>
+
+        <button onclick="closeMedicineNotification()">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <!-- Notification Body -->
+
+    <div class="notification-body">
+
+
+        <div class="notification-medicine-icon">
+
+            💊
+
+        </div>
+
+
+        <div>
+
+            <h2 id="notificationMedicine">
+
+                Medicine
+
+            </h2>
+
+
+            <p id="notificationDosage">
+
+                Dosage
+
+            </p>
+
+
+            <p id="notificationPeriod">
+
+                Period
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Reminder Message -->
+
+    <div class="notification-message">
+
+        🎙️ It's time to take your medicine.
+
+    </div>
+
+
+    <!-- Notification Buttons -->
+
+    <div class="notification-actions">
+
+
+        <!-- Taken -->
+
+        <button class="taken-btn"
+                onclick="markMedicineTaken()">
+
+            ✅ Taken
+
+        </button>
+
+
+        <!-- Snooze -->
+
+        <button class="snooze-btn"
+                onclick="snoozeMedicine()">
+
+            ⏰ Snooze 10 min
+
+        </button>
+
+
+        <!-- Speak Current Reminder -->
+
+        <button class="voice-btn"
+                onclick="speakCurrentReminder()">
+
+            🔊 Speak Now
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <p>
+        © 2026 Smart Elderly Care Assistant
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

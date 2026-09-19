@@ -1,0 +1,656 @@
+/* =====================================================
+   SMART ELDERLY CARE ASSISTANT
+   DASHBOARD DESIGN
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #263238;
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   MAIN HEADER
+   ===================================================== */
+
+header {
+    background: linear-gradient(135deg, #5b7cfa, #7b61ff);
+    color: white;
+    padding: 22px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+header h1 {
+    font-size: 27px;
+    margin: 0;
+}
+
+header p {
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+nav a,
+nav button {
+    text-decoration: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.18);
+    color: white;
+    padding: 10px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+nav a:hover,
+nav button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+   ===================================================== */
+
+main,
+.container {
+    width: 92%;
+    max-width: 1250px;
+    margin: 30px auto;
+}
+
+
+/* =====================================================
+   WELCOME SECTION
+   ===================================================== */
+
+.welcome-section {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+.welcome-section h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.welcome-section p {
+    color: #68727d;
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   DASHBOARD CARDS
+   ===================================================== */
+
+.stats-container,
+.stats-grid,
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    border-left: 5px solid #667eea;
+}
+
+.stat-card h3 {
+    color: #68727d;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.stat-card .number,
+.stat-card p {
+    font-size: 30px;
+    font-weight: bold;
+    color: #263238;
+}
+
+
+/* =====================================================
+   GENERAL SECTION
+   ===================================================== */
+
+section {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+}
+
+section h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #263238;
+}
+
+
+/* =====================================================
+   MEDICINE LIST
+   ===================================================== */
+
+#medicineList {
+    display: grid;
+    gap: 15px;
+}
+
+.medicine-card {
+    background: #f8faff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.medicine-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.medicine-info h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+    color: #3549a3;
+}
+
+.medicine-info p {
+    margin: 6px 0;
+    color: #59636e;
+    font-size: 14px;
+}
+
+.medicine-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.medicine-actions button {
+    border: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.medicine-actions button:first-child {
+    background: #e8edff;
+    color: #4c5fd5;
+}
+
+.medicine-actions button:last-child {
+    background: #ffe8e8;
+    color: #d64545;
+}
+
+
+/* =====================================================
+   REMINDER
+   ===================================================== */
+
+.reminder-section {
+    background: linear-gradient(
+        135deg,
+        #fff8e8,
+        #fffdf7
+    );
+    border-left: 5px solid #ffb020;
+}
+
+#reminderMedicine {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+#reminderDetails {
+    margin-top: 8px;
+    color: #68727d;
+}
+
+#reminderTime {
+    margin-top: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #e18a00;
+}
+
+
+/* =====================================================
+   VOICE ASSISTANT
+   ===================================================== */
+
+.voice-section {
+    background: linear-gradient(
+        135deg,
+        #f0f3ff,
+        #faf9ff
+    );
+}
+
+.voice-btn,
+.notification-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 5px;
+    background: #667eea;
+    color: white;
+}
+
+.voice-btn:hover,
+.notification-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+
+/* =====================================================
+   MEDICAL INFORMATION
+   ===================================================== */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.info-card {
+    background: #f8faff;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid #e4e8f0;
+}
+
+.info-card h3 {
+    font-size: 15px;
+    color: #667eea;
+    margin-bottom: 8px;
+}
+
+.info-card p {
+    color: #4b5563;
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   CAREGIVER
+   ===================================================== */
+
+.caregiver-section {
+    background: linear-gradient(
+        135deg,
+        #eefbf5,
+        #ffffff
+    );
+}
+
+.caregiver-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.caregiver-item {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #dcefe5;
+}
+
+.caregiver-item strong {
+    display: block;
+    color: #3d8060;
+    margin-bottom: 7px;
+}
+
+
+/* =====================================================
+   SETTINGS
+   ===================================================== */
+
+.settings-section {
+    background: #ffffff;
+}
+
+.settings-section button {
+    margin-top: 5px;
+}
+
+
+/* =====================================================
+   MEDICINE NOTIFICATION
+   ===================================================== */
+
+.medicine-notification {
+    display: none;
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 370px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    z-index: 9999;
+    border: 1px solid #e4e8f0;
+}
+
+.notification-header {
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+    color: white;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.notification-header button {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.notification-body {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    align-items: center;
+}
+
+.notification-medicine-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #eef1ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+}
+
+.notification-body h2 {
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+.notification-body p {
+    margin: 4px 0;
+    color: #68727d;
+}
+
+.notification-message {
+    background: #f7f8fc;
+    margin: 0 20px 15px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 20px;
+}
+
+.notification-actions button {
+    flex: 1;
+    border: none;
+    padding: 11px 8px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.taken-btn {
+    background: #dff6e8;
+    color: #23834d;
+}
+
+.snooze-btn {
+    background: #fff0d4;
+    color: #a96c00;
+}
+
+.notification-actions .voice-btn {
+    background: #e8edff;
+    color: #4c5fd5;
+    margin: 0;
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #7b8490;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+button {
+    font-family: inherit;
+}
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.loading-text {
+    text-align: center;
+    padding: 30px;
+    color: #7b8490;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    .stats-container,
+    .stats-grid,
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .info-grid,
+    .caregiver-card {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav a,
+    nav button {
+        flex: 1;
+        text-align: center;
+    }
+
+    main,
+    .container {
+        width: 94%;
+        margin: 20px auto;
+    }
+
+    .stats-container,
+    .stats-grid,
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .medicine-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .medicine-actions {
+        width: 100%;
+    }
+
+    .medicine-actions button {
+        flex: 1;
+    }
+
+    .medicine-notification {
+        width: calc(100% - 30px);
+        right: 15px;
+        bottom: 15px;
+    }
+
+}
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-medicine-btn {
+    background: #5b7cfa;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-medicine-btn:hover {
+    opacity: 0.9;
+}
+.today-schedule {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.today-schedule h2 {
+    margin-bottom: 20px;
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 12px;
+    background: #f4f7fb;
+    border-radius: 12px;
+}
+
+.schedule-item p {
+    margin: 5px 0 0;
+    color: #666;
+}
+
+.schedule-time {
+    font-weight: bold;
+    font-size: 16px;
+}
+/* =====================================================
+   MISSED MEDICINE ALERT
+   ===================================================== */
+
+.missed-alert-section {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.missed-alert-section h2 {
+    margin-bottom: 20px;
+}
+
+.missed-alert {
+    background: #fff1f1;
+    border-left: 5px solid #e53935;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.missed-alert strong {
+    color: #d32f2f;
+}
+
+.missed-alert p {
+    margin: 5px 0;
+    color: #666;
+}
