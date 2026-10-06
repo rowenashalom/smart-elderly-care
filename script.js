@@ -3,7 +3,7 @@
 // MAIN JAVASCRIPT
 // =====================================================
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://smart-elderly-care.onrender.com";
 
 
 // =====================================================
@@ -542,32 +542,37 @@ async function loadMedicines() {
 function displayMedicines(medicines) {
 
     const medicineList =
-        document.getElementById(
-            "medicineList"
-        );
-
+        document.getElementById("medicineList");
 
     if (!medicineList) {
         return;
     }
 
-
     medicineList.innerHTML = "";
 
-
-    if (
-        !medicines ||
-        medicines.length === 0
-    ) {
+    if (!medicines || medicines.length === 0) {
 
         medicineList.innerHTML = `
-            <p class="loading-text">
-                No medicines added yet.
-            </p>
+            <div class="empty-medicine">
+                <div class="empty-icon">💊</div>
+
+                <h3>No medicines added yet</h3>
+
+                <p>
+                    Add your first medicine to start receiving reminders.
+                </p>
+
+                <button
+                    class="empty-add-btn"
+                    onclick="goToAddMedicine()">
+
+                    ➕ Add Medicine
+
+                </button>
+            </div>
         `;
 
         return;
-
     }
 
 
@@ -576,33 +581,72 @@ function displayMedicines(medicines) {
         const medicineCard =
             document.createElement("div");
 
-
         medicineCard.className =
             "medicine-card";
 
 
         medicineCard.innerHTML = `
 
-            <div class="medicine-info">
+            <div class="medicine-card-top">
 
-                <h3>
-                    💊 ${medicine.medicineName}
-                </h3>
+                <div class="medicine-icon">
+                    💊
+                </div>
 
-                <p>
-                    <strong>Dosage:</strong>
-                    ${medicine.dosage}
-                </p>
+                <div class="medicine-info">
 
-                <p>
-                    <strong>Period:</strong>
-                    ${medicine.period}
-                </p>
+                    <h3>
+                        ${medicine.medicineName}
+                    </h3>
 
-                <p>
-                    <strong>Time:</strong>
-                    ⏰ ${medicine.time}
-                </p>
+                    <span class="medicine-status">
+                        ● Scheduled
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="medicine-details">
+
+                <div class="medicine-detail">
+
+                    <span class="detail-label">
+                        DOSAGE
+                    </span>
+
+                    <strong>
+                        ${medicine.dosage}
+                    </strong>
+
+                </div>
+
+
+                <div class="medicine-detail">
+
+                    <span class="detail-label">
+                        TIME OF DAY
+                    </span>
+
+                    <strong>
+                        ${medicine.period}
+                    </strong>
+
+                </div>
+
+
+                <div class="medicine-detail">
+
+                    <span class="detail-label">
+                        REMINDER TIME
+                    </span>
+
+                    <strong>
+                        ⏰ ${medicine.time}
+                    </strong>
+
+                </div>
 
             </div>
 
@@ -610,6 +654,7 @@ function displayMedicines(medicines) {
             <div class="medicine-actions">
 
                 <button
+                    class="medicine-edit-btn"
                     onclick="editMedicine('${medicine._id}')">
 
                     ✏️ Edit
@@ -618,6 +663,7 @@ function displayMedicines(medicines) {
 
 
                 <button
+                    class="medicine-delete-btn"
                     onclick="deleteMedicine('${medicine._id}')">
 
                     🗑️ Delete
@@ -637,137 +683,79 @@ function displayMedicines(medicines) {
 
 }
 
-
 // =====================================================
 // ADD MEDICINE
 // =====================================================
 
 async function addMedicine() {
 
-    const user = getCurrentUser();
-
+    const user =
+        JSON.parse(localStorage.getItem("user"));
 
     if (!user || !user._id) {
-
-        alert(
-            "Please login first."
-        );
-
+        alert("Please login again.");
         return;
-
     }
-
 
     const medicineName =
-        document.getElementById(
-            "medicineName"
-        )?.value.trim();
-
+        document.getElementById("medicineName").value.trim();
 
     const dosage =
-        document.getElementById(
-            "dosage"
-        )?.value.trim();
-
+        document.getElementById("dosage").value.trim();
 
     const period =
-        document.getElementById(
-            "period"
-        )?.value.trim();
-
+        document.getElementById("period").value;
 
     const time =
-        document.getElementById(
-            "time"
-        )?.value;
+        document.getElementById("time").value;
 
-
-    if (
-        !medicineName ||
-        !dosage ||
-        !period ||
-        !time
-    ) {
-
-        alert(
-            "Please fill all medicine details."
-        );
-
+    if (!medicineName || !dosage || !period || !time) {
+        alert("Please fill in all medicine details.");
         return;
-
     }
-
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/medicine/add`,
-            {
+        const response =
+            await fetch(
+                "https://smart-elderly-care.onrender.com/api/medicine/add",
+                {
+                    method: "POST",
 
-                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    userId: user._id,
-
-                    medicineName,
-                    dosage,
-                    period,
-                    time
-
-                })
-
-            }
-        );
-
+                    body: JSON.stringify({
+                        userId: user._id,
+                        medicineName: medicineName,
+                        dosage: dosage,
+                        period: period,
+                        time: time
+                    })
+                }
+            );
 
         const data =
             await response.json();
 
+        if (response.ok) {
 
-        if (!response.ok) {
+            alert("Medicine added successfully!");
+
+            document
+                .getElementById("medicineForm")
+                .reset();
+
+            // Automatically return to dashboard
+            window.location.href = "dashboard.html";
+
+        } else {
 
             alert(
                 data.message ||
                 "Failed to add medicine."
             );
-
-            return;
-
-        }
-
-
-        alert(
-            "Medicine added successfully!"
-        );
-
-
-        const form =
-            document.getElementById(
-                "medicineForm"
-            );
-
-
-        if (form) {
-            form.reset();
-        }
-
-
-        // If dashboard exists,
-        // refresh it
-
-        if (
-            document.getElementById(
-                "medicineList"
-            )
-        ) {
-
-            await loadMedicines();
-
         }
 
     } catch (error) {
@@ -778,11 +766,9 @@ async function addMedicine() {
         );
 
         alert(
-            "Unable to connect to server."
+            "Unable to connect to the server."
         );
-
     }
-
 }
 
 
@@ -1372,13 +1358,11 @@ function startMedicineReminder(
 
 
 }
-// =====================================================
+
+
+   // =====================================================
 // CHECK MISSED MEDICINES
 // =====================================================
-// ================= CHECK MISSED MEDICINES =================
-
-// ================= CHECK MISSED MEDICINES =================
-
 function checkMissedMedicines() {
 
     if (
@@ -1390,220 +1374,104 @@ function checkMissedMedicines() {
 
     const now = new Date();
 
-    const currentMinutes =
-        now.getHours() * 60 +
-        now.getMinutes();
+    reminderMedicines.forEach(async function (medicine) {
 
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-    const timerKey =
-        "medicineReminderTimers_" + today;
-
-    const shownKey =
-        "medicineRemindersShown_" + today;
-
-
-    // Get reminder history
-    let shownReminders = {};
-
-    const savedShown =
-        localStorage.getItem(shownKey);
-
-    if (savedShown) {
-        try {
-            shownReminders =
-                JSON.parse(savedShown);
-        } catch (error) {
-            shownReminders = {};
+        if (!medicine.time) {
+            return;
         }
-    }
 
+        const medicineId = medicine._id;
 
-    // Get snooze timers
-    let timers = {};
+        // =================================================
+        // CHECK IF ALREADY TAKEN
+        // =================================================
 
-    const savedTimers =
-        localStorage.getItem(timerKey);
+        const completed =
+            getCompletedMedicines();
 
-    if (savedTimers) {
-        try {
-            timers =
-                JSON.parse(savedTimers);
-        } catch (error) {
-            timers = {};
+        if (completed.includes(medicineId)) {
+            return;
         }
-    }
 
+        // =================================================
+        // CHECK CURRENT STATUS
+        // =================================================
 
-    reminderMedicines.forEach(
-        async function (medicine) {
+        const status =
+            getMedicineStatus(medicineId);
 
-            if (!medicine.time) {
-                return;
+        if (status === "Missed") {
+            return;
+        }
+
+        // =================================================
+        // CHECK SNOOZE TIMER
+        // =================================================
+
+        const today =
+            new Date()
+                .toISOString()
+                .split("T")[0];
+
+        const timerKey =
+            "medicineReminderTimers_" + today;
+
+        let timers = {};
+
+        const savedTimers =
+            localStorage.getItem(timerKey);
+
+        if (savedTimers) {
+            try {
+                timers =
+                    JSON.parse(savedTimers);
+            } catch (error) {
+                timers = {};
             }
+        }
 
-            const medicineId =
-                medicine._id;
+        const timer =
+            timers[medicineId];
 
+        // =================================================
+        // STILL SNOOZED
+        // =================================================
 
-            // ================= TAKEN =================
-
-            const completed =
-                getCompletedMedicines();
-
-            if (
-                completed.includes(medicineId) ||
-                getMedicineStatus(medicineId) === "Taken"
-            ) {
-                return;
-            }
-
-
-            // ================= SNOOZE =================
-
-            const timer =
-                timers[medicineId];
+        if (status === "Snoozed") {
 
             if (
                 timer &&
+                timer.snoozeUntil &&
+                Date.now() <
                 timer.snoozeUntil
             ) {
-
-                // Still waiting for snooze period
-                if (
-                    Date.now() <
-                    timer.snoozeUntil
-                ) {
-                    return;
-                }
-
-                // Snooze finished.
-                // Start a fresh 10-minute response period.
-
-                timer.snoozeUntil = null;
-
-                timer.responseDeadline =
-                    Date.now() +
-                    (10 * 60 * 1000);
-
-                timers[medicineId] =
-                    timer;
-
-                localStorage.setItem(
-                    timerKey,
-                    JSON.stringify(timers)
-                );
-
-                setMedicineStatus(
-                    medicineId,
-                    "Pending"
-                );
-
-                showMedicineNotification(
-                    medicine
-                );
-
                 return;
             }
 
+            // Snooze has finished.
+            // Wait for the second reminder/deadline.
+            return;
+        }
 
-            // ================= AFTER SNOOZE =================
+        // =================================================
+        // SECOND REMINDER RESPONSE WINDOW
+        // =================================================
 
+        if (
+            timer &&
+            timer.responseDeadline
+        ) {
+
+            // Still within 10-minute response window
             if (
-                timer &&
+                Date.now() <
                 timer.responseDeadline
             ) {
-
-                if (
-                    Date.now() <
-                    timer.responseDeadline
-                ) {
-                    return;
-                }
-
-                // Second 10-minute period finished
-
-                delete timers[medicineId];
-
-                localStorage.setItem(
-                    timerKey,
-                    JSON.stringify(timers)
-                );
-
-                setMedicineStatus(
-                    medicineId,
-                    "Missed"
-                );
-
-                console.log(
-                    "Medicine marked as MISSED:",
-                    medicine.medicineName
-                );
-
-                await notifyCaregiver(
-                    medicine
-                );
-
-                displayMissedMedicineAlerts(
-                    reminderMedicines
-                );
-
                 return;
             }
 
-
-            // ================= NORMAL REMINDER =================
-
-            const parts =
-                medicine.time.split(":");
-
-            const medicineMinutes =
-                parseInt(parts[0]) * 60 +
-                parseInt(parts[1]);
-
-
-            // IMPORTANT:
-            // Do nothing before scheduled time.
-
-            if (
-                currentMinutes <
-                medicineMinutes
-            ) {
-                return;
-            }
-
-
-            // The reminder must have actually
-            // appeared before we can mark it missed.
-
-            if (
-                !shownReminders[medicineId]
-            ) {
-                return;
-            }
-
-
-            // Wait 10 minutes after reminder
-
-            if (
-                currentMinutes <=
-                medicineMinutes + 10
-            ) {
-                return;
-            }
-
-
-            // ================= MISSED =================
-
-            if (
-                getMedicineStatus(medicineId) ===
-                "Missed"
-            ) {
-                return;
-            }
+            // 10 minutes have passed
+            // after the second reminder.
 
             setMedicineStatus(
                 medicineId,
@@ -1611,88 +1479,123 @@ function checkMissedMedicines() {
             );
 
             console.log(
-                "Medicine marked as MISSED:",
+                "🚨 Medicine marked as MISSED after snooze:",
                 medicine.medicineName
+            );
+
+            showTodaySchedule(
+                reminderMedicines
+            );
+
+            updateDashboardStatistics(
+                reminderMedicines
+            );
+
+            displayMissedMedicineAlerts(
+                reminderMedicines
             );
 
             await notifyCaregiver(
                 medicine
             );
 
-            displayMissedMedicineAlerts(
-                reminderMedicines
-            );
-        }
-    );
-}
-
-async function notifyCaregiver(medicine) {
-
-    try {
-
-        const user =
-            JSON.parse(
-                localStorage.getItem("user")
-            );
-
-        if (!user || !user._id) {
-            console.log(
-                "User information not available."
-            );
             return;
         }
 
-        if (!user.caregiverEmail) {
-            console.log(
-                "Caregiver email not available."
-            );
+        // =================================================
+        // NORMAL MEDICINE TIMING
+        // =================================================
+
+        const parts =
+            medicine.time.split(":");
+
+        if (parts.length !== 2) {
             return;
         }
 
-        const response =
-            await fetch(
-                "http://localhost:5000/api/notification/caregiver-alert",
-                {
-                    method: "POST",
+        const medicineHours =
+            parseInt(parts[0], 10);
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+        const medicineMinutes =
+            parseInt(parts[1], 10);
 
-                    body: JSON.stringify({
-                        userId: user._id,
-                        medicineId: medicine._id
-                    })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if (response.ok) {
-
-            console.log(
-                "📧 Caregiver email sent successfully!"
-            );
-
-        } else {
-
-            console.error(
-                "Caregiver email failed:",
-                data.message
-            );
+        if (
+            isNaN(medicineHours) ||
+            isNaN(medicineMinutes)
+        ) {
+            return;
         }
 
-    } catch (error) {
+        const scheduledMinutes =
+            medicineHours * 60 +
+            medicineMinutes;
 
-        console.error(
-            "Caregiver notification error:",
-            error
+        const currentMinutes =
+            now.getHours() * 60 +
+            now.getMinutes();
+
+        const minutesPassed =
+            currentMinutes -
+            scheduledMinutes;
+
+        console.log(
+            "Medicine check:",
+            medicine.medicineName,
+            "| Scheduled:",
+            medicine.time,
+            "| Current:",
+            String(
+                now.getHours()
+            ).padStart(2, "0") +
+            ":" +
+            String(
+                now.getMinutes()
+            ).padStart(2, "0"),
+            "| Minutes passed:",
+            minutesPassed
         );
-    }
-}
 
+        // =================================================
+        // NORMAL 10-MINUTE RESPONSE WINDOW
+        // =================================================
+
+        if (minutesPassed <= 10) {
+            return;
+        }
+
+        // =================================================
+        // MARK AS MISSED
+        // =================================================
+
+        setMedicineStatus(
+            medicineId,
+            "Missed"
+        );
+
+        console.log(
+            "🚨 Medicine marked as MISSED:",
+            medicine.medicineName
+        );
+
+        showTodaySchedule(
+            reminderMedicines
+        );
+
+        updateDashboardStatistics(
+            reminderMedicines
+        );
+
+        displayMissedMedicineAlerts(
+            reminderMedicines
+        );
+
+        await notifyCaregiver(
+            medicine
+        );
+
+    });
+
+}
 // =====================================================
 // CHECK MEDICINE REMINDER
 // =====================================================
@@ -1946,75 +1849,7 @@ function closeMedicineNotification() {
 function markMedicineTaken() {
 
     const medicineData =
-        localStorage.getItem(
-            "currentReminder"
-        );
-
-
-    if (!medicineData) {
-
-        closeMedicineNotification();
-
-        return;
-
-    }
-
-
-    try {
-
-        const medicine =
-            JSON.parse(
-                medicineData
-            );
-
-
-        saveCompletedMedicine(
-            medicine._id
-        );
-        
-        setMedicineStatus(medicine._id, "Taken");
-
-        closeMedicineNotification();
-
-
-        // Update statistics
-
-        updateDashboardStatistics(
-            reminderMedicines
-        );
-
-
-        alert(
-            "✅ " +
-            medicine.medicineName +
-            " marked as taken."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Taken error:",
-            error
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// SNOOZE MEDICINE
-// =====================================================
-
-// ================= SNOOZE MEDICINE =================
-
-function snoozeMedicine() {
-
-    const medicineData =
-        localStorage.getItem(
-            "currentReminder"
-        );
+        localStorage.getItem("currentReminder");
 
     if (!medicineData) {
         closeMedicineNotification();
@@ -2025,6 +1860,74 @@ function snoozeMedicine() {
 
         const medicine =
             JSON.parse(medicineData);
+
+        // Save medicine as completed
+        saveCompletedMedicine(medicine._id);
+
+        // Change status to Taken
+        setMedicineStatus(
+            medicine._id,
+            "Taken"
+        );
+
+        // Close the reminder popup
+        closeMedicineNotification();
+
+        // Update dashboard statistics immediately
+        updateDashboardStatistics(
+            reminderMedicines
+        );
+
+        // Refresh Today's Medicine Schedule immediately
+        showTodaySchedule(
+            reminderMedicines
+        );
+
+        // Refresh missed medicine section
+        displayMissedMedicineAlerts(
+            reminderMedicines
+        );
+
+        alert(
+            "✅ " +
+            medicine.medicineName +
+            " marked as taken."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Taken error:",
+            error
+        );
+    }
+}
+
+// =====================================================
+// SNOOZE MEDICINE
+// =====================================================
+
+// ================= SNOOZE MEDICINE =================
+
+function snoozeMedicine() {
+
+    const medicineData =
+        localStorage.getItem("currentReminder");
+
+    if (!medicineData) {
+        closeMedicineNotification();
+        return;
+    }
+
+    try {
+
+        const medicine =
+            JSON.parse(medicineData);
+
+        // Stop any voice that is currently speaking
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+        }
 
         const today =
             new Date()
@@ -2048,10 +1951,7 @@ function snoozeMedicine() {
             }
         }
 
-        // Give the medicine another
-        // 10 minutes before showing
-        // the reminder again.
-
+        // Set 10-minute snooze
         timers[medicine._id] = {
 
             snoozeUntil:
@@ -2066,54 +1966,60 @@ function snoozeMedicine() {
             JSON.stringify(timers)
         );
 
-        // Mark as snoozed
-
+        // Change status immediately
         setMedicineStatus(
             medicine._id,
             "Snoozed"
         );
 
+        // Close popup
         closeMedicineNotification();
 
-        alert(
-            "⏰ Reminder snoozed for 10 minutes."
+        // Update dashboard immediately
+        updateDashboardStatistics(
+            reminderMedicines
         );
 
-        // Show reminder again after 10 minutes
+        // Update Today's Medicine Schedule immediately
+        showTodaySchedule(
+            reminderMedicines
+        );
 
+        // Update missed medicine section
+        displayMissedMedicineAlerts(
+            reminderMedicines
+        );
+
+        alert(
+            "⏰ " +
+            medicine.medicineName +
+            " snoozed for 10 minutes."
+        );
+
+        // After 10 minutes, show the reminder again
         setTimeout(
             function () {
 
                 const currentTimers =
-                    localStorage.getItem(
-                        timerKey
-                    );
+                    localStorage.getItem(timerKey);
 
                 let updatedTimers = {};
 
                 if (currentTimers) {
-
                     try {
                         updatedTimers =
-                            JSON.parse(
-                                currentTimers
-                            );
+                            JSON.parse(currentTimers);
                     } catch (error) {
                         updatedTimers = {};
                     }
                 }
 
                 const timer =
-                    updatedTimers[
-                        medicine._id
-                    ];
+                    updatedTimers[medicine._id];
 
                 if (!timer) {
                     return;
                 }
-
-                // Start a fresh 10-minute
-                // response period
 
                 timer.snoozeUntil = null;
 
@@ -2121,28 +2027,34 @@ function snoozeMedicine() {
                     Date.now() +
                     (10 * 60 * 1000);
 
-                updatedTimers[
-                    medicine._id
-                ] = timer;
+                updatedTimers[medicine._id] = timer;
 
                 localStorage.setItem(
                     timerKey,
-                    JSON.stringify(
-                        updatedTimers
-                    )
+                    JSON.stringify(updatedTimers)
                 );
 
+                // Change back to Pending
                 setMedicineStatus(
                     medicine._id,
                     "Pending"
                 );
 
+                // Refresh dashboard
+                updateDashboardStatistics(
+                    reminderMedicines
+                );
+
+                showTodaySchedule(
+                    reminderMedicines
+                );
+
+                // Show reminder again
                 showMedicineNotification(
                     medicine
                 );
 
             },
-
             10 * 60 * 1000
         );
 
@@ -2468,30 +2380,100 @@ function testVoice() {
 
 function testMedicineNotification() {
 
+    console.log("Testing browser notification...");
+
     const testMedicine = {
-
-        _id:
-            "test-medicine",
-
-        medicineName:
-            "Paracetamol",
-
-        dosage:
-            "1 tablet",
-
-        period:
-            "Morning",
-
-        time:
-            "08:00"
-
+        medicineName: "Paracetamol",
+        dosage: "1 tablet",
+        period: "Morning",
+        time: "Now"
     };
 
+    // Check browser notification support
+    if (!("Notification" in window)) {
+        alert("This browser does not support desktop notifications.");
+        return;
+    }
 
-    showMedicineNotification(
-        testMedicine
-    );
+    // Ask for permission if it has not been granted
+    if (Notification.permission === "default") {
 
+        Notification.requestPermission()
+            .then(function (permission) {
+
+                if (permission === "granted") {
+                    sendTestDesktopNotification(testMedicine);
+                } else {
+                    alert(
+                        "Desktop notification permission was not allowed."
+                    );
+                }
+
+            });
+
+        return;
+    }
+
+    // Permission already granted
+    if (Notification.permission === "granted") {
+
+        sendTestDesktopNotification(testMedicine);
+
+    } else {
+
+        alert(
+            "Desktop notifications are blocked. " +
+            "Please allow notifications for this website in Edge."
+        );
+    }
+
+    // Keep your existing in-dashboard popup
+    showMedicineNotification(testMedicine);
+
+    // Keep your existing voice reminder
+    speakMedicineReminder(testMedicine);
+}
+
+function sendTestDesktopNotification(medicine) {
+
+    try {
+
+        const notification =
+            new Notification(
+                "🔔 Medicine Reminder",
+                {
+                    body:
+                        "It's time to take " +
+                        medicine.medicineName +
+                        ". Dosage: " +
+                        medicine.dosage,
+
+                    icon: ""
+                }
+            );
+
+        notification.onclick = function () {
+
+            window.focus();
+
+            notification.close();
+        };
+
+        console.log(
+            "✅ Desktop browser notification sent."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Desktop notification error:",
+            error
+        );
+
+        alert(
+            "Unable to show desktop notification."
+        );
+    }
 }
 
 
@@ -2659,122 +2641,184 @@ function goToAddMedicine() {
 // TODAY'S MEDICINE SCHEDULE
 // =====================================================
 
-// =====================================================
-// TODAY'S MEDICINE SCHEDULE
-// =====================================================
-
 function showTodaySchedule(medicines) {
 
     const schedule =
-        document.getElementById(
-            "todaySchedule"
-        );
-
+        document.getElementById("todaySchedule");
 
     if (!schedule) {
         return;
     }
 
 
-    if (
-        !medicines ||
-        medicines.length === 0
-    ) {
+    // =================================================
+    // NO MEDICINES
+    // =================================================
 
-        schedule.innerHTML =
-            "<p>No medicines scheduled for today.</p>";
+    if (!medicines || medicines.length === 0) {
+
+        schedule.innerHTML = `
+            <div class="empty-schedule">
+
+                <div class="empty-schedule-icon">
+                    📅
+                </div>
+
+                <h3>
+                    No medicines scheduled
+                </h3>
+
+                <p>
+                    You don't have any medicines
+                    scheduled for today.
+                </p>
+
+                <button
+                    class="schedule-add-btn"
+                    onclick="goToAddMedicine()">
+
+                    ➕ Add Medicine
+
+                </button>
+
+            </div>
+        `;
 
         return;
     }
 
 
-    // Sort medicines by time
+    // =================================================
+    // SORT BY TIME
+    // =================================================
 
-    medicines.sort(
-        function (a, b) {
+    medicines.sort(function (a, b) {
 
-            return a.time.localeCompare(
-                b.time
-            );
+        return a.time.localeCompare(b.time);
 
-        }
-    );
+    });
 
 
     schedule.innerHTML = "";
 
 
-    medicines.forEach(
-        function (medicine) {
+    // =================================================
+    // CREATE SCHEDULE CARDS
+    // =================================================
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+    medicines.forEach(function (medicine) {
 
-
-            item.className =
-                "schedule-item";
+        const item =
+            document.createElement("div");
 
 
-            // Get current medicine status
-
-            const status =
-                getMedicineStatus(
-                    medicine._id
-                );
+        item.className =
+            "schedule-card";
 
 
-            let statusIcon = "🟡";
+        // =================================================
+        // MEDICINE STATUS
+        // =================================================
 
-            if (status === "Taken") {
-                statusIcon = "🟢";
-            }
-
-            else if (status === "Snoozed") {
-                statusIcon = "🔵";
-            }
-
-            else if (status === "Missed") {
-                statusIcon = "🔴";
-            }
+        const status =
+            getMedicineStatus(
+                medicine._id
+            );
 
 
-            item.innerHTML = `
-                
-                <div>
-                    
-                    <strong>
-                        💊 ${medicine.medicineName}
-                    </strong>
+        let statusIcon = "🟡";
+        let statusClass = "pending";
+
+
+        if (status === "Taken") {
+
+            statusIcon = "🟢";
+            statusClass = "taken";
+
+        }
+
+        else if (status === "Snoozed") {
+
+            statusIcon = "🔵";
+            statusClass = "snoozed";
+
+        }
+
+        else if (status === "Missed") {
+
+            statusIcon = "🔴";
+            statusClass = "missed";
+
+        }
+
+
+        // =================================================
+        // CARD HTML
+        // =================================================
+
+        item.innerHTML = `
+
+            <div class="schedule-card-left">
+
+                <div class="schedule-medicine-icon">
+                    💊
+                </div>
+
+                <div class="schedule-medicine-info">
+
+                    <h3>
+                        ${medicine.medicineName}
+                    </h3>
 
                     <p>
                         ${medicine.dosage}
-                        •
+                    </p>
+
+                    <span class="schedule-period">
                         ${medicine.period}
-                    </p>
-
-                    <p>
-                        ${statusIcon}
-                        <strong>${status}</strong>
-                    </p>
+                    </span>
 
                 </div>
 
+            </div>
 
-                <div class="schedule-time">
+
+            <div class="schedule-card-middle">
+
+                <span class="schedule-time-label">
+                    REMINDER TIME
+                </span>
+
+                <strong class="schedule-card-time">
                     ⏰ ${medicine.time}
-                </div>
+                </strong>
 
-            `;
+            </div>
 
 
-            schedule.appendChild(
-                item
-            );
+            <div class="schedule-card-right">
 
-        }
-    );
+                <span class="
+                    schedule-status
+                    ${statusClass}
+                ">
+
+                    <span class="status-icon">
+                        ${statusIcon}
+                    </span>
+
+                    ${status}
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        schedule.appendChild(item);
+
+    });
 
 }
 // =====================================================
@@ -2893,3 +2937,91 @@ alert.innerHTML = `
     );
 
 }
+
+// =====================================================
+// CAREGIVER EMAIL NOTIFICATION
+// =====================================================
+async function notifyCaregiver(medicine) {
+
+    try {
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("user")
+            );
+
+        if (!user || !user._id) {
+
+            console.log(
+                "User information not available."
+            );
+
+            return;
+        }
+
+        if (!user.caregiverEmail) {
+
+            console.log(
+                "Caregiver email not available."
+            );
+
+            return;
+        }
+
+        console.log(
+            "📧 Sending caregiver email to:",
+            user.caregiverEmail
+        );
+
+        const response =
+            await fetch(
+                `${API_URL}/api/notification/caregiver-alert`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        userId:
+                            user._id,
+
+                        medicineId:
+                            medicine._id
+
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (response.ok) {
+
+            console.log(
+                "📧 Caregiver email sent successfully!"
+            );
+
+        } else {
+
+            console.error(
+                "Caregiver email failed:",
+                data.message
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Caregiver notification error:",
+            error
+        );
+
+    }
+}
+
+
