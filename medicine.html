@@ -2,134 +2,1089 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Medicine Reminder - ElderCare</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Medicine Reminder - SmartCare</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8fc;
+            color: #263238;
+        }
+
+
+        /* ===============================
+           PAGE
+        =============================== */
+
+        .medicine-page {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* ===============================
+           SIDEBAR
+        =============================== */
+
+        .medicine-sidebar {
+            width: 235px;
+            min-height: 100vh;
+            background: white;
+            border-right: 1px solid #e5eaf0;
+            padding: 25px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px 30px;
+        }
+
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #e8f1ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+
+        .brand h2 {
+            margin: 0;
+            font-size: 17px;
+            color: #2463d4;
+        }
+
+
+        .brand p {
+            margin: 3px 0 0;
+            font-size: 9px;
+            color: #9aa3ae;
+        }
+
+
+        .menu-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #9ba4af;
+            margin: 12px 12px 8px;
+            text-transform: uppercase;
+        }
+
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+
+        .menu button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #657181;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 9px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+
+        .menu button:hover {
+            background: #eef4ff;
+            color: #2463d4;
+        }
+
+
+        .menu button.active {
+            background: #e8f1ff;
+            color: #2463d4;
+            font-weight: bold;
+        }
+
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 20px;
+        }
+
+
+        .sidebar-user {
+            background: #f7f9fc;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+
+        .sidebar-user strong {
+            display: block;
+            font-size: 12px;
+        }
+
+
+        .sidebar-user span {
+            color: #929ca8;
+            font-size: 10px;
+        }
+
+
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: #fff0f0;
+            color: #d84b4b;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+
+        /* ===============================
+           MAIN
+        =============================== */
+
+        .medicine-main {
+            margin-left: 235px;
+            width: calc(100% - 235px);
+            min-height: 100vh;
+        }
+
+
+        /* ===============================
+           TOP BAR
+        =============================== */
+
+        .medicine-topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5eaf0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+        }
+
+
+        .page-heading h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+
+        .page-heading p {
+            margin: 4px 0 0;
+            font-size: 11px;
+            color: #8994a2;
+        }
+
+
+        .dashboard-btn {
+            border: none;
+            background: #2463d4;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* ===============================
+           CONTENT
+        =============================== */
+
+        .medicine-content {
+            max-width: 1050px;
+            margin: auto;
+            padding: 30px;
+        }
+
+
+        /* ===============================
+           TITLE
+        =============================== */
+
+        .medicine-title {
+            margin-bottom: 22px;
+        }
+
+
+        .medicine-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+
+        .medicine-title p {
+            margin: 7px 0 0;
+            color: #7d8998;
+            font-size: 13px;
+        }
+
+
+        /* ===============================
+           FORM CARD
+        =============================== */
+
+        .medicine-form-card {
+            background: white;
+            border: 1px solid #e6ebf1;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 720px;
+            box-shadow: 0 4px 15px rgba(30, 60, 90, 0.05);
+        }
+
+
+        .form-card-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+
+        .form-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #eaf2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+
+        .form-card-heading h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+
+        .form-card-heading p {
+            margin: 4px 0 0;
+            font-size: 11px;
+            color: #8994a2;
+        }
+
+
+        /* ===============================
+           FORM
+        =============================== */
+
+        .medicine-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+
+        .form-group label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #566270;
+            margin-bottom: 7px;
+        }
+
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #dce2e9;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+            font-size: 13px;
+            color: #35404c;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2463d4;
+            box-shadow: 0 0 0 3px rgba(36, 99, 212, 0.08);
+        }
+
+
+        .form-hint {
+            font-size: 10px;
+            color: #9aa3ae;
+            margin-top: 5px;
+        }
+
+
+        /* ===============================
+           ADD BUTTON
+        =============================== */
+
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+
+
+        .add-btn {
+            border: none;
+            background: #2463d4;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .add-btn:hover {
+            background: #174fae;
+        }
+
+
+        /* ===============================
+           MY MEDICINES
+        =============================== */
+
+        .medicine-list-section {
+            background: white;
+            border: 1px solid #e6ebf1;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(30, 60, 90, 0.05);
+        }
+
+
+        .medicine-list-header {
+            margin-bottom: 20px;
+        }
+
+
+        .medicine-list-header h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+
+        .medicine-list-header p {
+            margin: 5px 0 0;
+            color: #8994a2;
+            font-size: 11px;
+        }
+
+
+        #medicineList {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        /* ===============================
+           MEDICINE CARD
+        =============================== */
+
+        .medicine-card {
+            background: #f8faff;
+            border: 1px solid #e1e8f2;
+            border-radius: 13px;
+            padding: 18px;
+            transition: 0.2s;
+        }
+
+
+        .medicine-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 90, 0.08);
+        }
+
+
+        .medicine-card h3 {
+            margin: 0 0 12px;
+            color: #2463d4;
+            font-size: 16px;
+        }
+
+
+        .medicine-card p {
+            margin: 7px 0;
+            color: #687585;
+            font-size: 12px;
+        }
+
+
+        .medicine-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+
+        .medicine-card button {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+
+        .medicine-card .edit-btn {
+            background: #eaf2ff;
+            color: #2463d4;
+        }
+
+
+        .medicine-card .delete-btn {
+            background: #fff0f0;
+            color: #d84b4b;
+        }
+
+
+        .medicine-card .edit-btn:hover {
+            background: #dceaff;
+        }
+
+
+        .medicine-card .delete-btn:hover {
+            background: #ffe1e1;
+        }
+
+
+        /* ===============================
+           INFORMATION CARDS
+        =============================== */
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            max-width: 720px;
+            margin-top: 20px;
+        }
+
+
+        .info-card {
+            background: white;
+            border: 1px solid #e6ebf1;
+            border-radius: 12px;
+            padding: 17px;
+        }
+
+
+        .info-card h4 {
+            margin: 0 0 7px;
+            font-size: 13px;
+        }
+
+
+        .info-card p {
+            margin: 0;
+            font-size: 11px;
+            color: #7e8997;
+            line-height: 1.5;
+        }
+
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .medicine-sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                padding: 10px;
+            }
+
+
+            .medicine-page {
+                display: block;
+            }
+
+
+            .medicine-main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+
+            .menu {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+
+            .menu button {
+                white-space: nowrap;
+                width: auto;
+            }
+
+
+            .medicine-topbar {
+                padding: 0 15px;
+            }
+
+
+            .medicine-content {
+                padding: 20px 15px;
+            }
+
+
+            .medicine-form {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+
+            .form-actions {
+                grid-column: auto;
+            }
+
+
+            #medicineList {
+                grid-template-columns: 1fr;
+            }
+
+
+            .info-row {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <nav>
-        <h2>💙 ElderCare</h2>
 
-        <div>
-            <a href="index.html">Home</a>
-            <a href="medical-profile.html">Medical Profile</a>
-            <button onclick="logout()">Logout</button>
+<div class="medicine-page">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="medicine-sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                💙
+            </div>
+
+            <div>
+
+                <h2>SmartCare</h2>
+
+                <p>
+                    ELDERLY CARE ASSISTANT
+                </p>
+
+            </div>
+
         </div>
-    </nav>
 
 
-    <div class="form-container">
-
-        <h1>💊 Medicine Reminder</h1>
-
-        <p>
-            Add your medicines and set a reminder time.
-        </p>
+        <div class="menu-title">
+            CARE MANAGEMENT
+        </div>
 
 
-        <form id="medicineForm">
+        <div class="menu">
 
-            <label for="medicineName">
-                Medicine Name
-            </label>
-
-            <input
-                type="text"
-                id="medicineName"
-                placeholder="Example: Paracetamol"
-                required
-            >
-
-
-            <label for="dosage">
-                Dosage
-            </label>
-
-            <input
-                type="text"
-                id="dosage"
-                placeholder="Example: 500 mg"
-                required
-            >
-
-
-            <label for="period">
-                Time of Day
-            </label>
-
-            <select id="period" required>
-
-                <option value="">
-                    Select time of day
-                </option>
-
-                <option value="Morning">
-                    🌅 Morning
-                </option>
-
-                <option value="Afternoon">
-                    ☀️ Afternoon
-                </option>
-
-                <option value="Night">
-                    🌙 Night
-                </option>
-
-            </select>
-
-
-            <label for="medicineTime">
-                Medicine Time
-            </label>
-
-            <input
-               type="time"
-               id="time"
-               required
->
-
-            <button type="submit">
-                💊 Add Medicine
+            <button onclick="goDashboard()">
+                🏠 Dashboard
             </button>
 
-        </form>
+
+            <button class="active">
+                💊 Medicines
+            </button>
 
 
-        <br>
+            <button onclick="window.location.href='medical-profile.html'">
+                🩺 Medical Profile
+            </button>
 
 
-        <button onclick="goDashboard()">
-            🏠 View Dashboard
-        </button>
-
-    </div>
+            <button onclick="goDashboard()">
+                🔔 Reminders
+            </button>
 
 
-    <script src="script.js"></script>
+            <button onclick="goDashboard()">
+                📅 Today's Schedule
+            </button>
 
-    <script>
+        </div>
 
-        function goDashboard() {
 
-            window.location.href = "dashboard.html";
+        <div class="menu-title">
+            ACCOUNT
+        </div>
+
+
+        <div class="menu">
+
+            <button onclick="goDashboard()">
+                👨‍👩‍👧 Caregiver
+            </button>
+
+
+            <button onclick="goDashboard()">
+                ⚙️ Settings
+            </button>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="sidebar-user">
+
+                <strong id="medicineUserName">
+                    User
+                </strong>
+
+                <span>
+                    Smart Elderly Care
+                </span>
+
+            </div>
+
+
+            <button class="logout-btn"
+                    onclick="logout()">
+
+                🚪 Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="medicine-main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="medicine-topbar">
+
+
+            <div class="page-heading">
+
+                <h1>
+                    Medicine Reminder
+                </h1>
+
+                <p>
+                    Keep track of your daily medications
+                </p>
+
+            </div>
+
+
+            <button class="dashboard-btn"
+                    onclick="goDashboard()">
+
+                🏠 Dashboard
+
+            </button>
+
+        </div>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="medicine-content">
+
+
+            <div class="medicine-title">
+
+                <h2>
+                    💊 Add Your Medicine
+                </h2>
+
+                <p>
+                    Enter your medicine details and set a reminder time.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 ADD MEDICINE FORM
+            ========================================== -->
+
+            <div class="medicine-form-card">
+
+
+                <div class="form-card-heading">
+
+                    <div class="form-icon">
+                        💊
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            New Medicine
+                        </h3>
+
+                        <p>
+                            Fill in all the required information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form id="medicineForm"
+                      class="medicine-form">
+
+
+                    <div class="form-group full">
+
+                        <label for="medicineName">
+                            Medicine Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="medicineName"
+                            placeholder="Example: Paracetamol"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="dosage">
+                            Dosage
+                        </label>
+
+                        <input
+                            type="text"
+                            id="dosage"
+                            placeholder="Example: 500 mg"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="period">
+                            Time of Day
+                        </label>
+
+                        <select id="period"
+                                required>
+
+                            <option value="">
+                                Select time of day
+                            </option>
+
+                            <option value="Morning">
+                                🌅 Morning
+                            </option>
+
+                            <option value="Afternoon">
+                                ☀️ Afternoon
+                            </option>
+
+                            <option value="Night">
+                                🌙 Night
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="time">
+                            Medicine Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="time"
+                            required
+                        >
+
+                        <span class="form-hint">
+                            Choose the time when you want to be reminded.
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="add-btn">
+
+                            💊 Add Medicine
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 MY MEDICINES
+            ========================================== -->
+
+            <div class="medicine-list-section">
+
+
+                <div class="medicine-list-header">
+
+                    <h2>
+                        💊 My Medicines
+                    </h2>
+
+                    <p>
+                        Your scheduled medicines
+                    </p>
+
+                </div>
+
+
+                <div id="medicineList">
+
+                    <p>
+                        Loading medicines...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =========================================
+                 INFORMATION
+            ========================================== -->
+
+            <div class="info-row">
+
+
+                <div class="info-card">
+
+                    <h4>
+                        🔔 Medicine Reminder
+                    </h4>
+
+                    <p>
+                        You will receive a reminder at the
+                        scheduled time.
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h4>
+                        🎙️ Voice Assistant
+                    </h4>
+
+                    <p>
+                        The assistant can speak your medicine
+                        reminder aloud.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script src="script.js"></script>
+
+
+<script>
+
+    /* =========================================
+       DASHBOARD
+    ========================================== */
+
+    function goDashboard() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+
+    /* =========================================
+       LOGOUT
+    ========================================== */
+
+    function logout() {
+
+        localStorage.removeItem("user");
+
+        window.location.href =
+            "login.html";
+
+    }
+
+
+    /* =========================================
+       SHOW USER NAME
+    ========================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            try {
+
+                const user =
+                    JSON.parse(
+                        localStorage.getItem("user")
+                    );
+
+
+                if (
+                    user &&
+                    user.name
+                ) {
+
+                    const nameElement =
+                        document.getElementById(
+                            "medicineUserName"
+                        );
+
+
+                    if (nameElement) {
+
+                        nameElement.textContent =
+                            user.name;
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "User display error:",
+                    error
+                );
+
+            }
 
         }
+    );
 
+</script>
 
-        function logout() {
-
-            localStorage.removeItem("user");
-
-            window.location.href = "login.html";
-
-        }
-
-    </script>
 
 </body>
 
