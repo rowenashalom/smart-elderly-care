@@ -1142,7 +1142,19 @@ function getMedicineStatus(medicineId) {
     const statuses =
         getMedicineStatuses();
 
-    return statuses[medicineId] || "Pending";
+    const status =
+        statuses[medicineId];
+
+    /*
+     * If there is no saved status,
+     * the medicine is Pending.
+     */
+
+    if (!status) {
+        return "Pending";
+    }
+
+    return status;
 }
 
 
