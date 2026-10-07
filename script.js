@@ -1606,9 +1606,7 @@ function checkMedicineReminder() {
         !reminderMedicines ||
         reminderMedicines.length === 0
     ) {
-
         return;
-
     }
 
 
@@ -1640,6 +1638,218 @@ function checkMedicineReminder() {
     reminderMedicines.forEach(
         function (medicine) {
 
+            const medicineId =
+                medicine._id;
+
+
+            const completed =
+                getCompletedMedicines();
+
+
+            // Do not remind if already taken
+
+            if (
+                completed.includes(
+                    medicineId
+                )
+            ) {
+                return;
+            }
+
+
+            const status =
+                getMedicineStatus(
+                    medicineId
+                );
+
+
+            // Do not show another reminder
+            // if medicine is already marked Missed
+
+            if (
+                status === "Missed"
+            ) {
+                return;
+            }
+
+
+            /*
+             * CHECK SNOOZE / RESPONSE TIMER
+             */
+
+            const timerKey =
+                "medicineReminderTimers_" +
+                today;
+
+
+            let timers = {};
+
+
+            const savedTimers =
+                localStorage.getItem(
+                    timerKey
+                );
+
+
+            if (savedTimers) {
+
+                try {
+
+                    timers =
+                        JSON.parse(
+                            savedTimers
+                        );
+
+                } catch (error) {
+
+                    timers = {};
+
+                }
+
+            }
+
+
+            const timer =
+                timers[medicineId];
+
+
+            /*
+             * SNOOZE PERIOD
+             */
+
+            if (
+                status === "Snoozed" &&
+                timer &&
+                timer.snoozeUntil
+            ) {
+
+                // Still inside the 10-minute snooze period
+
+                if (
+                    Date.now() <
+                    timer.snoozeUntil
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * SNOOZE FINISHED
+                 *
+                 * Give the user another
+                 * 10-minute response period.
+                 */
+
+                timer.snoozeUntil =
+                    null;
+
+
+                timer.responseDeadline =
+                    Date.now() +
+                    (10 * 60 * 1000);
+
+
+                timers[medicineId] =
+                    timer;
+
+
+                localStorage.setItem(
+                    timerKey,
+                    JSON.stringify(
+                        timers
+                    )
+                );
+
+
+                setMedicineStatus(
+                    medicineId,
+                    "Pending"
+                );
+
+
+                console.log(
+                    "⏰ Snooze finished. Showing reminder again:",
+                    medicine.medicineName
+                );
+
+
+                showMedicineNotification(
+                    medicine
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+             * RESPONSE DEADLINE
+             *
+             * If the user ignored the
+             * reminder after snooze,
+             * mark it as missed.
+             */
+
+            if (
+                timer &&
+                timer.responseDeadline
+            ) {
+
+                if (
+                    Date.now() <
+                    timer.responseDeadline
+                ) {
+
+                    return;
+
+                }
+
+
+                setMedicineStatus(
+                    medicineId,
+                    "Missed"
+                );
+
+
+                console.log(
+                    "🚨 Medicine marked as MISSED:",
+                    medicine.medicineName
+                );
+
+
+                showTodaySchedule(
+                    reminderMedicines
+                );
+
+
+                updateDashboardStatistics(
+                    reminderMedicines
+                );
+
+
+                displayMissedMedicineAlerts(
+                    reminderMedicines
+                );
+
+
+                notifyCaregiver(
+                    medicine
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+             * NORMAL DAILY REMINDER
+             */
+
+
             if (
                 medicine.time !==
                 currentTime
@@ -1653,12 +1863,12 @@ function checkMedicineReminder() {
             const reminderKey =
                 today +
                 "_" +
-                medicine._id +
+                medicineId +
                 "_" +
                 currentTime;
 
 
-            // Prevent the same reminder
+            // Prevent the same normal reminder
             // from appearing repeatedly
 
             if (
@@ -1675,21 +1885,10 @@ function checkMedicineReminder() {
                 reminderKey;
 
 
-            const completed =
-                getCompletedMedicines();
-
-
-            // Don't remind if already taken
-
-            if (
-                completed.includes(
-                    medicine._id
-                )
-            ) {
-
-                return;
-
-            }
+            console.log(
+                "🔔 Normal medicine reminder:",
+                medicine.medicineName
+            );
 
 
             showMedicineNotification(
